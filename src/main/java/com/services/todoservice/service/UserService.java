@@ -1,10 +1,13 @@
 package com.services.todoservice.service;
 
-import com.services.todoservice.dto.UserDTO;
-import com.services.todoservice.entity.User;
+import com.services.todoservice.dto.UsersDTO;
+import com.services.todoservice.entity.Users;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface UserService {
-    User updateUser(UserDTO user);
-    void deleteUser(UserDTO user);
-    User createUser(UserDTO user);
+    Users updateUser(UsersDTO user);
+    void deleteUser(UsersDTO user);
+    Users createUser(UsersDTO user);
 }

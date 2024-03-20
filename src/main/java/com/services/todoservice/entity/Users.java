@@ -3,16 +3,20 @@ package com.services.todoservice.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class User {
+@NoArgsConstructor
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
-    @Column(nullable = false, unique = true)
-    private String userName;
+    @Column(name = "user_id")
+    private int user_id;
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String user_name;
 }

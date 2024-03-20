@@ -6,6 +6,7 @@ import com.services.todoservice.mapper.TaskMapper;
 import com.services.todoservice.repository.TasksRepository;
 import com.services.todoservice.service.TaskService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TaskServiceImpl implements TaskService{
@@ -13,6 +14,7 @@ public class TaskServiceImpl implements TaskService{
     private TaskMapper taskMapper;
 
     @Override
+    @Transactional
     public Task createTask(TaskDTO taskDTO){
         // Convert DTO to JPA Entity and save the task to database
         Task task = TaskMapper.mapToTask(taskDTO);
@@ -24,6 +26,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    @Transactional
     public Task updateTask(TaskDTO taskDTO){
         // Convert DTO to JPA Entity
         // Should find the task and hold it
@@ -38,6 +41,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    @Transactional
     public void deleteTask(TaskDTO taskDTO){
         // Convert DTO to JPA Entity
         // Check if task exist
