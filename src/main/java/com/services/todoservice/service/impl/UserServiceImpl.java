@@ -2,6 +2,7 @@ package com.services.todoservice.service.impl;
 
 import com.services.todoservice.dto.UsersDTO;
 import com.services.todoservice.entity.Users;
+import com.services.todoservice.exception.DuplicateUserException;
 import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.UserMapper;
 import com.services.todoservice.repository.UsersRepository;
@@ -22,12 +23,10 @@ public class UserServiceImpl implements UserService {
     public Users createUser(UsersDTO UsersDTO){
         // Convert to JPA
         Users user = userMapper.mapToUser(UsersDTO);
-        // Need to check if user exist
-        if(Optional.ofNullable(usersRepository.findByuserName(user.getUser_name())).isEmpty()){
-            return null;
-        }else {
-            return usersRepository.save(user);
-        }
+        // Check if user exist
+       Optional.of(usersRepository.findByuserName(user.getUser_name()))
+               .orElseThrow(() -> new DuplicateUserException("User " + user.getUser_name() + " exist."));
+        return usersRepository.save(user);
     }
     @Transactional
     public Users updateUser(UsersDTO UsersDTO){

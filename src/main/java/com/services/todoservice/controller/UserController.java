@@ -2,6 +2,7 @@ package com.services.todoservice.controller;
 
 import com.services.todoservice.dto.UsersDTO;
 import com.services.todoservice.entity.Users;
+import com.services.todoservice.exception.DuplicateUserException;
 import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.UserMapper;
 import com.services.todoservice.repository.UsersRepository;
@@ -21,10 +22,17 @@ public class UserController {
     @Autowired
     UsersRepository usersRepository;
     @PostMapping("createUser")
-    public ResponseEntity<UsersDTO> createUser (@RequestBody UsersDTO user){
-        Users userCreated = userService.createUser(user);
-        // TODO: Handle if user is alr created
-        return new ResponseEntity<>(UserMapper.mapToUsersDTO(userCreated), HttpStatus.CREATED);
+    public ResponseEntity<String> createUser (@RequestBody UsersDTO user){
+        try{
+            Users userCreated = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userCreated.getUser_name() + " created successfully!");
+        }catch(DuplicateUserException e){
+            return ResponseEntity.status(HttpStatus.IM_USED).body("Username taken.");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create user.");
+        }
+
+
     }
     @DeleteMapping("deleteUser")
     public ResponseEntity<String> deleteUser (@RequestBody UsersDTO user){
