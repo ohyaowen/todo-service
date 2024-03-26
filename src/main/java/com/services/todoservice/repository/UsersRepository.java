@@ -10,6 +10,6 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<Users,Integer> {
     // Spring Data JPA provides basic CRUD methods
     @Query(value = "SELECT u.user_id, u.user_name FROM todoapp.users u WHERE u.user_name = :userName", nativeQuery = true)
-    List<Users>findByuserName(@Param("userName") String username);
+    Users findByuserName(@Param("userName") String username);
 
 }

@@ -2,6 +2,7 @@ package com.services.todoservice.service.impl;
 
 import com.services.todoservice.dto.UsersDTO;
 import com.services.todoservice.entity.Users;
+import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.UserMapper;
 import com.services.todoservice.repository.UsersRepository;
 import com.services.todoservice.service.UserService;
@@ -36,19 +37,15 @@ public class UserServiceImpl implements UserService {
         if(usersRepository.findByuserName(Optional.ofNullable(user.getUser_name()).orElse(null)) == null){
             return null;
         }else {
+
             return usersRepository.save(user);
         }
     }
     @Transactional
-    public void deleteUser(UsersDTO usersDTO){
+    public void deleteUser(UsersDTO usersDTO) {
         Users deleteUser = userMapper.mapToUser(usersDTO);
-        try{
-            List<Users> listOfUsers = usersRepository.findByuserName(deleteUser.getUser_name());
-            for(Users user: listOfUsers){
-                usersRepository.deleteById(user.getUser_id());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        Users user = Optional.ofNullable(usersRepository.findByuserName(deleteUser.getUser_name()))
+                .orElseThrow(() -> new UserNotFoundException("Username: " + deleteUser.getUser_name() + " not found."));
+        usersRepository.deleteById(user.getUser_id());
     }
 }

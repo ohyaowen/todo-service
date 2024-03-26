@@ -2,6 +2,7 @@ package com.services.todoservice.controller;
 
 import com.services.todoservice.dto.UsersDTO;
 import com.services.todoservice.entity.Users;
+import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.UserMapper;
 import com.services.todoservice.repository.UsersRepository;
 import com.services.todoservice.service.UserService;
@@ -27,8 +28,15 @@ public class UserController {
     }
     @DeleteMapping("deleteUser")
     public ResponseEntity<String> deleteUser (@RequestBody UsersDTO user){
-        userService.deleteUser(user);
-        return new ResponseEntity<>("Successfully deleted user: " + user.getUsername() + ".", HttpStatus.ACCEPTED);
+        try{
+            userService.deleteUser(user);
+            return new ResponseEntity<>("Successfully deleted user: " + user.getUsername() + ".", HttpStatus.ACCEPTED);
+        }catch (UserNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+        }
+
     }
 
     @PutMapping("updateUser")
