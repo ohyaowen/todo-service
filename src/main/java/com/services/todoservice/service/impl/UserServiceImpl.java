@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,10 @@ public class UserServiceImpl implements UserService {
         // Convert to JPA
         Users user = userMapper.mapToUser(UsersDTO);
         // Check if user exist
-       Optional.of(usersRepository.findByuserName(user.getUser_name()))
-               .orElseThrow(() -> new DuplicateUserException("User " + user.getUser_name() + " exist."));
+        Optional<Users> existingUser = Optional.ofNullable(usersRepository.findByuserName(user.getUser_name()));
+        if(existingUser.isPresent()){
+            throw new DuplicateUserException("User " + user.getUser_name() + " already exists.");
+        }
         return usersRepository.save(user);
     }
     @Transactional

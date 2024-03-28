@@ -7,7 +7,6 @@ import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.UserMapper;
 import com.services.todoservice.repository.UsersRepository;
 import com.services.todoservice.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
