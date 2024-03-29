@@ -47,8 +47,14 @@ public class UserController {
     }
 
     @PutMapping("updateUser")
-    public ResponseEntity<UsersDTO> updateUser (@RequestBody UsersDTO user){
-        Users userUpdated = userService.updateUser(user);
-        return new ResponseEntity<>(UserMapper.mapToUsersDTO(userUpdated), HttpStatus.ACCEPTED);
+    public ResponseEntity<String> updateUser (@RequestBody UsersDTO user){
+        try{
+            Users userUpdated = userService.updateUser(user);
+            return new ResponseEntity<>("User successfully updated.", HttpStatus.ACCEPTED);
+        }catch (UserNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+        }
     }
 }

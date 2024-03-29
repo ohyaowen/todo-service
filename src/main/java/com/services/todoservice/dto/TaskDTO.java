@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TaskDTO {
-    private int id;
-    private int userId;
+    private Long id;
+    private Long userId;
     private String title;
     private String description;
     private String dueDate;

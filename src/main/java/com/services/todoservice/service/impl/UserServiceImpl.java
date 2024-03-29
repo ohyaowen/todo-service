@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
         Users updateUser = userMapper.mapToUser(usersDTO);
         Users user = Optional.ofNullable(usersRepository.findByuserName(updateUser.getUser_name()))
                 .orElseThrow(() -> new UserNotFoundException("Username: " + updateUser.getUser_name() + " not found."));
+        user.setUser_password(updateUser.getUser_password());
         return usersRepository.save(user);
     }
     @Transactional
