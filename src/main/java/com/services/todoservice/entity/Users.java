@@ -19,4 +19,6 @@ public class Users {
     private int user_id;
     @Column(name = "user_name", nullable = false, unique = true)
     private String user_name;
+    @Column(name = "user_password", nullable = false)
+    private String user_password;
 }

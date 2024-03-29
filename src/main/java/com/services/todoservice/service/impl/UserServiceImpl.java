@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,16 +30,12 @@ public class UserServiceImpl implements UserService {
         return usersRepository.save(user);
     }
     @Transactional
-    public Users updateUser(UsersDTO UsersDTO){
+    public Users updateUser(UsersDTO usersDTO){
         // Convert to JPA
-        Users user = userMapper.mapToUser(UsersDTO);
-        // Need to check if user exist
-        if(usersRepository.findByuserName(Optional.ofNullable(user.getUser_name()).orElse(null)) == null){
-            return null;
-        }else {
-
-            return usersRepository.save(user);
-        }
+        Users updateUser = userMapper.mapToUser(usersDTO);
+        Users user = Optional.ofNullable(usersRepository.findByuserName(updateUser.getUser_name()))
+                .orElseThrow(() -> new UserNotFoundException("Username: " + updateUser.getUser_name() + " not found."));
+        return usersRepository.save(user);
     }
     @Transactional
     public void deleteUser(UsersDTO usersDTO) {

@@ -11,20 +11,21 @@ Welcome to the To-Do Service project! This backend service is built on Spring Bo
 - **Database:** MariaDB
 
 ## Database Schema:
-        CREATE TABLE todoapp.users(
-            user_id INT AUTO_INCREMENT PRIMARY KEY,
-            user_name TEXT
-        );
+        CREATE TABLE IF NOT EXISTS users(
+             user_id INT AUTO_INCREMENT PRIMARY KEY,
+             user_name VARCHAR(255) NOT NULL UNIQUE,
+             user_password VARCHAR(255)
+         );
 
-        CREATE TABLE todoapp.tasks(
-            task_id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT,
-            title VARCHAR(255) NOT NULL,
-            DESCRIPTION TEXT,
-            due_date DATE,
-            complete_status BOOLEAN NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users(user_id)
-        );
+         CREATE TABLE IF NOT EXISTS tasks(
+             task_id INT AUTO_INCREMENT PRIMARY KEY,
+             user_id INT NOT NULL,
+             title VARCHAR(255) NOT NULL,
+             DESCRIPTION TEXT,
+             due_date DATE,
+             complete_status BOOLEAN NOT NULL,
+             FOREIGN KEY (user_id) REFERENCES users(user_id)
+         );
 
 ## Getting Started
 

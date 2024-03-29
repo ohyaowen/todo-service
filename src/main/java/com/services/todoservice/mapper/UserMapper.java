@@ -8,7 +8,8 @@ public class UserMapper {
     public static UsersDTO mapToUsersDTO(Users user){
         UsersDTO UsersDTO = new UsersDTO(
             user.getUser_id(),
-            user.getUser_name()
+            user.getUser_name(),
+            user.getUser_password()
         );
         return UsersDTO;
     }
@@ -16,7 +17,8 @@ public class UserMapper {
     public static Users mapToUser (UsersDTO UsersDTO){
         return new Users(
             UsersDTO.getUserID(),
-            UsersDTO.getUsername()
+            UsersDTO.getUsername(),
+            UsersDTO.getPassword()
         );
     }
 }
