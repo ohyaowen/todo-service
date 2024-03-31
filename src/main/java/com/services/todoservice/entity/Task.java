@@ -17,9 +17,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
     private Long task_id;
-    @ManyToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Users.class)
     @JoinColumn(name = "user_id", nullable = false)
-    private Long user_id;
+    private Users user;
     @Column(name = "title")
     private String title;
     @Column(name = "DESCRIPTION")

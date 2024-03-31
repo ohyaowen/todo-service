@@ -8,7 +8,7 @@ public class TaskMapper {
     public static TaskDTO mapToTaskDTO(Task task){
         TaskDTO taskDTO = new TaskDTO(
             task.getTask_id(),
-            task.getUser_id(),
+            UserMapper.mapToUsersDTO(task.getUser()),
             task.getTitle(),
             task.getDescription(),
             task.getDue_date(),
@@ -20,7 +20,7 @@ public class TaskMapper {
     public static Task mapToTask(TaskDTO taskDTO){
         Task task = new Task(
             taskDTO.getId(),
-            taskDTO.getUserId(),
+            UserMapper.mapToUser(taskDTO.getUser()),
             taskDTO.getTitle(),
             taskDTO.getDescription(),
             taskDTO.getDueDate(),
