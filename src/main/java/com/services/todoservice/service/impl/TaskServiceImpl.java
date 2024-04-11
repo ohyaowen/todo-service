@@ -1,9 +1,11 @@
 package com.services.todoservice.service.impl;
 
 import com.services.todoservice.dto.TaskDTO;
+import com.services.todoservice.dto.UsersDTO;
 import com.services.todoservice.entity.Task;
 import com.services.todoservice.entity.Users;
 import com.services.todoservice.exception.InvalidTaskException;
+import com.services.todoservice.exception.TaskNotFoundException;
 import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.TaskMapper;
 import com.services.todoservice.repository.TasksRepository;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,36 +37,36 @@ public class TaskServiceImpl implements TaskService{
             throw new InvalidTaskException("Invalid task input");
         }
         // Check if user ID exist
-        Users user = Optional.ofNullable(usersRepository.getById(task.getUser().getUser_id())).orElseThrow(() -> new UserNotFoundException("User is not found"));
+        Optional<Users> user = usersRepository.findById(task.getUser().getUser_id());
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found.");
+        }
         return tasksRepository.save(task);
     }
 
     @Override
     @Transactional
-    public Task updateTask(TaskDTO taskDTO){
-        // Convert DTO to JPA Entity
-        // Should find the task and hold it
-        // Modify what you need to modify
-        // Save it again
-        Task task = TaskMapper.mapToTask(taskDTO);
-        if(tasksRepository.findById(task.getTask_id()).isPresent()){
-            return tasksRepository.save(task);
-        }else{
-            return null;
-        }
+    public List<Task> getListOfTasks (UsersDTO user){
+        return Optional.ofNullable(tasksRepository.findTaskByUserID(user.getUserID())).orElse(Collections.emptyList());
     }
 
     @Override
     @Transactional
-    public void deleteTask(TaskDTO taskDTO){
-        // Convert DTO to JPA Entity
-        // Check if task exist
-        // Delete it
+    public Task updateTask(TaskDTO taskDTO){
+        // Since we allow for duplicated task, the task we are updating has to match entirely
         Task task = TaskMapper.mapToTask(taskDTO);
-        if(tasksRepository.findById(task.getTask_id()).isPresent()){
-            tasksRepository.deleteById(task.getTask_id());
-        }
+        // Check if task exist
+        Optional.ofNullable(tasksRepository.getTask(task.getTask_id())).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+        // Save the new properties
+        return tasksRepository.save(task);
     }
 
+    @Override
+    @Transactional
+    public void deleteTask(TaskDTO taskDTO) {
+        Task task = TaskMapper.mapToTask(taskDTO);
+        Optional.ofNullable(tasksRepository.getTask(task.getTask_id())).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+        tasksRepository.deleteById(task.getTask_id());
+    }
 
 }
