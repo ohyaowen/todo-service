@@ -51,3 +51,17 @@ git clone https://github.com/ohyaowen/todo-service.git
 cd todo-service
 3. Build and run the application
 mvn spring-boot:run
+
+## API Calls
+1. Import the Postman collection file located in /postman/.
+2. Run the API calls based on functionality.
+# Running the API Calls
+1. Open Postman.
+2. Click on the Import button in the top left corner.
+3. Select the Postman collection file (collection.json) located in the /postman/ directory.
+4. Once imported, you will see a list of API requests in the collection.
+5. Click on the request you want to run to open it.
+6. Click on the "Send" button to make the API call.
+7. View the response from the API in the Postman interface.
+# API Call Notes
+Make sure to review the request details, including the endpoint, request body (if applicable), and expected response, before running the API calls.
