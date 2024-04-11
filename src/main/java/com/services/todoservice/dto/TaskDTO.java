@@ -15,5 +15,5 @@ public class TaskDTO {
     private String title;
     private String description;
     private String dueDate;
-    private boolean completed;
+    private Boolean completed;
 }

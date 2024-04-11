@@ -7,13 +7,13 @@ import com.services.todoservice.exception.TaskNotFoundException;
 import com.services.todoservice.exception.UserNotFoundException;
 import com.services.todoservice.mapper.TaskMapper;
 import com.services.todoservice.service.TaskService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +21,8 @@ import java.util.List;
 @RequestMapping("api/tasks")
 public class TaskController {
     private TaskService taskService;
+    @Autowired
+    private TaskMapper taskMapper;
     // Handles API Request
     // Create Task
     @PostMapping("createTask")
@@ -64,15 +66,15 @@ public class TaskController {
 
     // Get all Task
     @GetMapping("getAllTask")
-    public ResponseEntity<?> getAllTask(@RequestBody UsersDTO user){
+    public ResponseEntity<?>getAllTask(@RequestBody UsersDTO user){
         try{
             List<Task> listOfTasks = taskService.getListOfTasks(user);
             if(listOfTasks.isEmpty()){
                 throw new TaskNotFoundException("Task not found");
             }else{
-                List<TaskDTO> listOfTaskDTO = Collections.emptyList();
+                List<TaskDTO> listOfTaskDTO = new ArrayList<>();
                 for(Task task : listOfTasks){
-                    listOfTaskDTO.add(TaskMapper.mapToTaskDTO(task));
+                    listOfTaskDTO.add(taskMapper.mapToTaskDTO(task));
                 }
                 return new ResponseEntity<>(listOfTasks, HttpStatus.ACCEPTED);
             }

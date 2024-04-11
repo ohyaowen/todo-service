@@ -25,8 +25,8 @@ public class TaskServiceImpl implements TaskService{
     private TasksRepository tasksRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
     private TaskMapper taskMapper;
-
     @Override
     @Transactional
     public Task createTask(TaskDTO taskDTO){
@@ -64,9 +64,8 @@ public class TaskServiceImpl implements TaskService{
     @Override
     @Transactional
     public void deleteTask(TaskDTO taskDTO) {
-        Task task = TaskMapper.mapToTask(taskDTO);
-        Optional.ofNullable(tasksRepository.getTask(task.getTask_id())).orElseThrow(() -> new TaskNotFoundException("Task not found"));
-        tasksRepository.deleteById(task.getTask_id());
+        Optional.ofNullable(tasksRepository.getTask(taskDTO.getId())).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+        tasksRepository.deleteById(taskDTO.getId());
     }
 
 }

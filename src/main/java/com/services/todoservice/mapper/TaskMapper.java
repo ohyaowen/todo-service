@@ -24,7 +24,7 @@ public class TaskMapper {
             taskDTO.getTitle(),
             taskDTO.getDescription(),
             taskDTO.getDueDate(),
-            taskDTO.isCompleted()
+            taskDTO.getCompleted()
         );
         return task;
     }
