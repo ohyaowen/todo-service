@@ -10,4 +10,5 @@ public interface UserService {
     Users updateUser(UsersDTO user);
     void deleteUser(UsersDTO user);
     Users createUser(UsersDTO user);
+    Boolean userExist(String username);
 }

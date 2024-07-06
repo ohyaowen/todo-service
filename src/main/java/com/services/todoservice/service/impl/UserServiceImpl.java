@@ -45,4 +45,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("Username: " + deleteUser.getUser_name() + " not found."));
         usersRepository.deleteById(user.getUser_id());
     }
+    @Transactional
+    public Boolean userExist(String user){
+        if(usersRepository.findByuserName(user)!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

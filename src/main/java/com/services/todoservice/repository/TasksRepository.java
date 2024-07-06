@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface TasksRepository extends JpaRepository<Task, Long> {
     // Spring Data JPA provides basic CRUD method
-    @Query(value = "SELECT * FROM todoapp.tasks WHERE user_id = :userID ", nativeQuery = true)
+    @Query(value = "SELECT * FROM tasks WHERE user_id = :userID ", nativeQuery = true)
     List<Task> findTaskByUserID(@Param("userID")Long userID);
-    @Query(value = "SELECT * FROM todoapp.tasks WHERE task_id = :taskID", nativeQuery = true)
+    @Query(value = "SELECT * FROM tasks WHERE task_id = :taskID", nativeQuery = true)
     Task getTask(@Param("taskID") Long taskid);
 }
